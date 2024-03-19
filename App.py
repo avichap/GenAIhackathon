@@ -3,7 +3,7 @@ from enum import Enum
 from dotenv import load_dotenv, find_dotenv
 from chains.chatgpt import executeQuery
 from chains.tmfRAG import TMFRAG
-print('Im in the begining of the code')
+print('******Im in the begining of the code')
 load_dotenv()
 mytmfRAG = TMFRAG()
 my3GPPRAG = TMFRAG()
@@ -55,4 +55,4 @@ if ThreeGPPAnswer != None:
     st.text_area(label="3GPP answer",value= ThreeGPPAnswer['result'],height=400)    
 if TMFAnswer != None:
     st.title(body="TMF Answer")
-    st.text_area(label="TMF answer",value= TMFAnswer['result'],height=400)   
+    st.text_area(label="TMF answer",value= TMFAnswer,height=400)   
