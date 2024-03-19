@@ -3,7 +3,7 @@ from enum import Enum
 from dotenv import load_dotenv, find_dotenv
 from chains.chatgpt import executeQuery
 from chains.tmfRAG import TMFRAG
-
+print('Im in the begining of the code')
 load_dotenv()
 mytmfRAG = TMFRAG()
 my3GPPRAG = TMFRAG()
@@ -21,6 +21,9 @@ with st.sidebar:
         "3. use CHATGPT\n"
     )   
 # Streamlit UI elements
+GPTAnswer = None
+ThreeGPPAnswer= None
+TMFAnswer = None
 st.title("Telco Standard Guru")
 selectedStandard = st.selectbox(
             'Choose Standard',
@@ -32,10 +35,7 @@ question = st.text_input(
     placeholder="How should I create an TMF intent",
     disabled=not selectedStandard
 )
-GPTtext = st.text_area()
-TMFtext = st.text()
-ThreeGPPText = st.text()
-st.write(selectedStandard) 
+
 
 if question and (selectedStandard == Standard.CHATGPT.value):
     GPTAnswer = executeQuery(question)
@@ -43,12 +43,16 @@ if question and (selectedStandard == Standard.TMF.value):
     TMFAnswer = mytmfRAG.queryTMF(question)
 if question and (selectedStandard == Standard.THREEGPP.value):
     ThreeGPPAnswer = my3GPPRAG.queryTMF(question)
+    
+# print (f'GPTAnswer :{GPTAnswer}')
+# print (f'ThreeGPPAnswer :{ThreeGPPAnswer}')
+# print (f'TMFAnswer :{TMFAnswer}')
 if GPTAnswer != None:
     st.title(body="GPT Answer")
-    st.text(body= GPTAnswer['result'])    
+    st.text_area(label="GPT answer",value= GPTAnswer['result'],height=400)    
 if ThreeGPPAnswer != None:
     st.title(body="3GPP Answer")
-    st.text(body= ThreeGPPAnswer['result'])    
+    st.text_area(label="3GPP answer",value= ThreeGPPAnswer['result'],height=400)    
 if TMFAnswer != None:
     st.title(body="TMF Answer")
-    st.text(body= TMFAnswer['result'])   
+    st.text_area(label="TMF answer",value= TMFAnswer['result'],height=400)   
