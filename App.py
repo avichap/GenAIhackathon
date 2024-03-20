@@ -24,15 +24,15 @@ def AssitantPage():
     GPTAnswer = None
     ThreeGPPAnswer= None
     TMFAnswer = None
-    st.title("Telco Standard Guru")
+    st.title("Telecom Standards Assistant")
     selectedStandard = st.selectbox(
                 'Choose Standard',
                 [source.value for source in Standard]
     )
 
     question = st.text_input(
-        "Ask Somthing Our Standard guru",
-        placeholder="How should I create an TMF intent",
+        "Ask Somtehing...",
+        placeholder="Please explain the standard or generate an artifact ",
         disabled=not selectedStandard
     )
 
@@ -87,10 +87,10 @@ def uploadContent():
 
 page_names_to_funcs = {
     # "—": intro,
-    "Use Telco Standards Assitant": AssitantPage,
+    "Use Telecom Standards Assitant": AssitantPage,
     "Upload to knowledge base": uploadContent
 }
-demo_name = st.sidebar.selectbox("Choose a page", page_names_to_funcs.keys())
+demo_name = st.sidebar.selectbox("Choose an Option", page_names_to_funcs.keys())
 page_names_to_funcs[demo_name]()
     
     
