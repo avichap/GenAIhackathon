@@ -5,7 +5,11 @@ from dotenv import load_dotenv, find_dotenv
 from chains.chatgpt import executeQuery
 from chains.tmfRAG import TMFRAG
 from langchain.docstore.document import Document
-
+from utils.contentUtil import embedContent
+class Standard(Enum):
+        TMF = 'TMF'
+        THREEGPP = '3GPP'
+        CHATGPT = 'CHATGPT' 
 
 
 print('******Im in the begining of the code')
@@ -15,10 +19,7 @@ def AssitantPage():
     my3GPPRAG = TMFRAG()
     mytmfRAG.initTMF(dbPath="C:/dev/hackathon/db/TMF/")
     my3GPPRAG.initTMF(dbPath="C:/dev/hackathon/db/3GPP/")
-    class Standard(Enum):
-        TMF = 'TMF'
-        THREEGPP = '3GPP'
-        CHATGPT = 'CHATGPT'  
+    
     # Streamlit UI elements
     GPTAnswer = None
     ThreeGPPAnswer= None
@@ -71,14 +72,24 @@ def AssitantPage():
         for document in documentsSet:
             st.text(document)
 def uploadContent():
-    st.write('Upload your content here')  
     
+    selectedStandard = st.selectbox(
+                'Choose Standard',
+                [source.value for source in Standard])
+    upload_file = st.file_uploader(label="Upload Content",type=['pdf','docx'])  
+    
+    if selectedStandard!=None and upload_file!=None:
+        if selectedStandard == Standard.CHATGPT.value:
+            st.write('CHATGPT does not allow embedding')
+        else:
+            embedContent(selectedStandard,upload_file)   
+            st.write(f'Content has been embedded successfully to  database')
+
 page_names_to_funcs = {
     # "—": intro,
     "Use Telco Assitent": AssitantPage,
     "Uploading content": uploadContent
 }
-
 demo_name = st.sidebar.selectbox("Choose a page", page_names_to_funcs.keys())
 page_names_to_funcs[demo_name]()
     
