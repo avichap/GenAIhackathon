@@ -87,8 +87,8 @@ def uploadContent():
 
 page_names_to_funcs = {
     # "—": intro,
-    "Use Telco Assitent": AssitantPage,
-    "Uploading content": uploadContent
+    "Use Telco Standards Assitant": AssitantPage,
+    "Upload to knowledge base": uploadContent
 }
 demo_name = st.sidebar.selectbox("Choose a page", page_names_to_funcs.keys())
 page_names_to_funcs[demo_name]()
