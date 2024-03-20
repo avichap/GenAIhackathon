@@ -1,8 +1,11 @@
 import streamlit as st
+import os
 from enum import Enum
 from dotenv import load_dotenv, find_dotenv
 from chains.chatgpt import executeQuery
 from chains.tmfRAG import TMFRAG
+from langchain.docstore.document import Document
+
 print('******Im in the begining of the code')
 load_dotenv()
 mytmfRAG = TMFRAG()
@@ -47,12 +50,30 @@ if question and (selectedStandard == Standard.THREEGPP.value):
 # print (f'GPTAnswer :{GPTAnswer}')
 # print (f'ThreeGPPAnswer :{ThreeGPPAnswer}')
 # print (f'TMFAnswer :{TMFAnswer}')
+
 if GPTAnswer != None:
     st.title(body="GPT Answer")
-    st.text_area(label="GPT answer",value= GPTAnswer['result'],height=400)    
+    st.text_area(label="GPT answer",value= GPTAnswer.content,height=400)    
 if ThreeGPPAnswer != None:
     st.title(body="3GPP Answer")
-    st.text_area(label="3GPP answer",value= ThreeGPPAnswer['result'],height=400)    
+    st.text_area(label="3GPP answer",value= ThreeGPPAnswer['result'],height=400)
+    documents = ThreeGPPAnswer['source_documents'];
+    documentsSet = set()
+    for document in documents:
+        documentsSet.add(os.path.basename(document.metadata['source']))
+    st.title(body="3GPP Source Documents")
+    for document in documentsSet:
+        st.text(document)
 if TMFAnswer != None:
     st.title(body="TMF Answer")
-    st.text_area(label="TMF answer",value= TMFAnswer,height=400)   
+    st.text_area(label="TMF answer",value=TMFAnswer['result'],height=400)
+    st.title(body="TMF Source Documents")
+    documents = TMFAnswer['source_documents'];
+    documentsSet = set()
+    for document in documents:
+        documentsSet.add(os.path.basename(document.metadata['source']))
+    for document in documentsSet:
+        st.text(document)
+    
+    
+     
